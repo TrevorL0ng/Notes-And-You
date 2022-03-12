@@ -41,9 +41,22 @@ app.post("/api/notes", function(req,res){
 });
 
 //Setting up the delete route
-
+app.delete("/api/notes/:id", function(req, res){
+    let myNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
+    let noteID = req.params.id;
+    let newID = 0;
+    myNotes = myNotes.filter(currNote => {
+        return currNote.id != noteID;
+    });
+    for (currNote of myNotes) {
+        currNote.id = newID.toString();
+        newID++;
+    };
+    fs.writeFileSync("./db/db.json", JSON.stringify(myNotes));
+    res.json(myNotes);
+});
 
 //Setting up the server to listen for testing
 app.listen(port, function() {
     console.log("Welcome to Port Buhgless. How can I help you?");
-})
+});
