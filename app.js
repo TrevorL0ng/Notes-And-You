@@ -2,7 +2,6 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const { dir } = require("console");
 const app = express();
 const port = 3005;
 const dirPath = path.join(__dirname, "/public");
@@ -10,7 +9,7 @@ const dirPath = path.join(__dirname, "/public");
 //Setting Express parameters
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
-app.use(express.json);
+app.use(express.json());
 
 //Setting get and post routes
 app.get("/notes", function(req, res){
