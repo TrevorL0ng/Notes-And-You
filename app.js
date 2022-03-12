@@ -20,6 +20,11 @@ app.get("/api/notes", function(erq,res){
     res.sendFile(path.join(__dirname, "/db/db.json"));
 });
 
+app.get("api/notes/:id", function(req,res){
+    let myNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
+    res.json(myNotes[Number(req.params.id)]);
+});
+
 //Setting index at the end because get * is weird
 app.get("*", function (req,res){
     res.sendFile(path.join(dirPath, "index.html"));
@@ -28,10 +33,15 @@ app.get("*", function (req,res){
 app.post("/api/notes", function(req,res){
     let myNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"));
     let newNote = req.body;
+    let noteID = (myNotes.length).toString();
+    newNote.id = noteID;
     myNotes.push(newNote);
     fs.writeFileSync("./db/db.json", JSON.stringify(myNotes));
     res.json(myNotes);
 });
+
+//Setting up the delete route
+
 
 //Setting up the server to listen for testing
 app.listen(port, function() {
